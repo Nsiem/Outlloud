@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon ./server/app.js",
-    "build": "webpack"
+    "build": "node ./server/app.js"
   },
   "author": "Antony Kechichian",
   "license": "ISC",
