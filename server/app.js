@@ -37,12 +37,6 @@ app.use('/user', user_routes)
 app.use('/post', post_routes)
 app.use('/comment', comment_routes)
 
-  
-app.use(express.static(path.resolve(__dirname, '../server/public')))
-
-
-app.get(/.*/, (req,res) => res.sendFile(__dirname + '/public/index.html'))
-
 
 if(process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, '../server/public')))

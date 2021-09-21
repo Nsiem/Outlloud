@@ -4,7 +4,7 @@
   "description": "Web Application Forum",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon ./Server/src/app.js"
+    "start": "nodemon ./server/app.js"
   },
   "author": "Antony Kechichian",
   "license": "ISC",
