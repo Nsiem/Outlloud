@@ -8,7 +8,7 @@ const flash = require('connect-flash')
 const path = require('path')
 
 // routenum for server listen
-const routenum = 5000
+const routenum = process.env.PORT || 5000
 
 // express app
 const app = express()
