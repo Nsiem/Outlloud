@@ -47,6 +47,7 @@ router.put('/:post_id/dislike', auth.authenticate(), (req,res) => {
 router.get('/:post_id', auth.authenticate(), (req,res) => {
     posts.findById(req.params.post_id).then((result) => {
         if (result == null) return res.status(404).send({message:"Post not found"})
+        console.log('post was found')
         res.status(200).json(result)
     }).catch((err) => {
         console.log(err)

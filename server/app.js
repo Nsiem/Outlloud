@@ -2,9 +2,10 @@
 const express = require('express')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
-const auth = require('./authorize')()
+const auth = require('./src/authorize')()
 const cors = require('cors')
 const flash = require('connect-flash')
+const path = require('path')
 
 // routenum for server listen
 const routenum = 5000
@@ -13,12 +14,12 @@ const routenum = 5000
 const app = express()
 
 // middleware and static files
-
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(morgan('tiny'))
 app.use(auth.initialize())
-app.use(cors())
+
 
 // connect to mongodb database
 const dbURI = 'mongodb+srv://Forumtest:zarouhikn1@archive.u8juo.mongodb.net/Forum?retryWrites=true&w=majority'
@@ -27,21 +28,26 @@ mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true, useFin
 .catch((err) => console.error(err))
 
 
-const auth_routes = require('../routes/auth_routes')
-const user_routes = require('../routes/user_routes')
-const post_routes = require('../routes/post_routes')
-const comment_routes = require('../routes/comment_routes')
+const auth_routes = require('./routes/auth_routes')
+const user_routes = require('./routes/user_routes')
+const post_routes = require('./routes/post_routes')
+const comment_routes = require('./routes/comment_routes')
 app.use('/login', auth_routes)
 app.use('/user', user_routes)
 app.use('/post', post_routes)
 app.use('/comment', comment_routes)
 
-// Handle production
-if(process.env.NODE_ENV === 'production') {
-    // static folder
-    app.use(express.static(__dirname + '/public'))
+  
+app.use(express.static(path.resolve(__dirname, '../server/public')))
 
-    // Handle SPA
+
+app.get(/.*/, (req,res) => res.sendFile(__dirname + '/public/index.html'))
+
+
+if(process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.resolve(__dirname, '../server/public')))
+
+
     app.get(/.*/, (req,res) => res.sendFile(__dirname + '/public/index.html'))
 }
 

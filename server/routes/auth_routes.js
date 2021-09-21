@@ -12,12 +12,10 @@ router.get('/', (req, res) => {
 
 router.post('/', (req,res) => {
     if (req.body.username && req.body.password) {
-        var datemilli = new Date()
 
         const payload = {
             username: req.body.username,
             password: req.body.password,
-            age: datemilli.getTime()
         }
         users.findOne({username: req.body.username}).then((result) => {
             if (result == null) return res.status(404).send({message: 'Username not found'})

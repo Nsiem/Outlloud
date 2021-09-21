@@ -12,18 +12,12 @@ const params = {
 }
 const authenticate_params = {
     session: false,
-    failureRedirect: '/login'
+    // failureRedirect: '/login'
 }
-const maxage = 86400000
+
 
 module.exports = function() {
     const strategy = new Strategy(params, function(payload, done) {
-        var datemilli = new Date()
-        var diff = Math.abs(datemilli.getTime() - payload.age)
-        
-        if (diff > maxage) {
-            return done(null, false, {message: 'Token is expired.'})
-        }
         users.findOne({username: payload.username}).then((result) => {
             if (result == null) return done(null, false, {message: 'Account does not exist'})
             if (result.password == payload.password) {
