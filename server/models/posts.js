@@ -8,7 +8,8 @@ const postsSchema = new mongoose.Schema({
     like_count: {type: Number, default: 0},
     liked_by: [String],
     disliked_by: [String],
-    comments: [Schema.Types.ObjectId]
+    comments: [Schema.Types.ObjectId],
+    creation: Number
 }, {timestamps: true})
 
 const Post = mongoose.model('Post', postsSchema)

@@ -6,6 +6,8 @@ const auth = require('./src/authorize')()
 const cors = require('cors')
 const flash = require('connect-flash')
 const path = require('path')
+const posts = require('./models/posts')
+const post_delete = require('./src/post_delete')
 
 // routenum for server listen
 const routenum = process.env.PORT || 5000
@@ -49,7 +51,32 @@ app.get('/', auth.authenticate(), (req,res) => {
     res.status(200).redirect('/post/new/1')
 })
 
+
+async function deletedocs() {
+    const onehour = 3600000
+    const timeminus = Date.now() - onehour
+
+    const documentstodelete = await posts.find({creation: {$lt: timeminus}})
+
+    if (documentstodelete.length > 0) {
+        var i 
+        for(i=0; i < documentstodelete.length; i++) {
+            console.log(documentstodelete[i]._creation < timeminus)
+            post_delete(documentstodelete[i]._id)
+        }
+    }
+
+    setTimeout(async function() {
+        await deletedocs()
+    }, 1800000)
+
+
+}
+
+
 // start the server
 app.listen(routenum, () => {
     console.log(`Server is now listening on port ${routenum}`)
 })
+
+deletedocs()

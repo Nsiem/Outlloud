@@ -17,10 +17,13 @@ router.post('/createpost', auth.authenticate(), (req,res) => {
     if(req.body.title.length == 0) return res.status(405).send({message:"Title must not be empty"})
     if(req.body.title.length > 108) return res.status(405).send({message:"Title cannot be greater than 100 characters"})
 
+    const currenttime = Date.now()
+
     const newpost = new posts
     newpost.username = req.user.username
     newpost.title = req.body.title
     newpost.body = req.body.postbody
+    newpost.creation = currenttime
     
     newpost.save().then((result) => {
         users.findByIdAndUpdate(req.user._id, {$push: {posts: result._id}}).then((userresult) => {
