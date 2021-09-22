@@ -24,7 +24,7 @@ app.use(auth.initialize())
 
 
 // connect to mongodb database
-const dbURI = 
+const dbURI = null
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
 .then((result) => console.log('Database Online'))
 .catch((err) => console.error(err))
