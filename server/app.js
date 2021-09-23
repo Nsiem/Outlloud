@@ -24,7 +24,7 @@ app.use(auth.initialize())
 
 
 // connect to mongodb database
-const dbURI = null
+const dbURI = 'mongodb+srv://Forumtest:zarouhikn1@archive.u8juo.mongodb.net/Forum?retryWrites=true&w=majority'
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
 .then((result) => console.log('Database Online'))
 .catch((err) => console.error(err))
@@ -53,22 +53,21 @@ app.get('/', auth.authenticate(), (req,res) => {
 
 
 async function deletedocs() {
-    const onehour = 3600000
-    const timeminus = Date.now() - onehour
+    const day = 86400000
+    const timeminus = Date.now() - day
 
     const documentstodelete = await posts.find({creation: {$lt: timeminus}})
 
     if (documentstodelete.length > 0) {
         var i 
         for(i=0; i < documentstodelete.length; i++) {
-            console.log(documentstodelete[i]._creation < timeminus)
             post_delete(documentstodelete[i]._id)
         }
     }
 
     setTimeout(async function() {
         await deletedocs()
-    }, 1800000)
+    }, 3600000)
 
 
 }
