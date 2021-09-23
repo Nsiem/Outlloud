@@ -53,22 +53,21 @@ app.get('/', auth.authenticate(), (req,res) => {
 
 
 async function deletedocs() {
-    const onehour = 3600000
-    const timeminus = Date.now() - onehour
+    const day = 86400000
+    const timeminus = Date.now() - day
 
     const documentstodelete = await posts.find({creation: {$lt: timeminus}})
 
     if (documentstodelete.length > 0) {
         var i 
         for(i=0; i < documentstodelete.length; i++) {
-            console.log(documentstodelete[i]._creation < timeminus)
             post_delete(documentstodelete[i]._id)
         }
     }
 
     setTimeout(async function() {
         await deletedocs()
-    }, 1800000)
+    }, 3600000)
 
 
 }
